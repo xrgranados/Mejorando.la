@@ -27,7 +27,7 @@ def home(req):
 
     # el archivo de cursos
     # organizados por mes-año
-    return render_to_response('cursos/home.html', {
+    return render_to_response('cursos.html', {
         'meses': [{
             'fecha': fecha,
             'cursos': website.models.Curso.objects.filter(fecha__year=fecha.year, fecha__month=fecha.month, activado=True).order_by('-fecha')
@@ -161,7 +161,7 @@ def curso(req, curso_slug):
         if not curso:
             raise Http404
 
-        return render_to_response('cursos/curso.html', vs)
+        return render_to_response('curso.html', vs)
 
 
 @require_POST

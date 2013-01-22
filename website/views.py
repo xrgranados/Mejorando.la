@@ -28,7 +28,7 @@ def home(solicitud):
     # checar si estamos transmitiendo en vivo
     # regresar la vista de "vivo" de ser asi
     if ('live' in solicitud.GET and solicitud.GET['live'] == '1') or es_vivo:
-        return render_to_response('website/live.html')
+        return render_to_response('live.html')
 
     # si no hay videos aun
     try:
@@ -38,7 +38,7 @@ def home(solicitud):
 
     ultimos_4_videos = Video.objects.all().order_by('-fecha').filter(activado=True)[1:5]
     # plantilla
-    return render_to_response('website/home.html', {
+    return render_to_response('home.html', {
         'ultimo_video': ultimo_video,  # El ultimo video
         'videos': ultimos_4_videos,  # ultimos 4 videos
         'pais': get_pais(solicitud.META),  # el horario del programa localizado
@@ -68,7 +68,7 @@ def get_timestamp():
 # el archivo muestra todos los videos
 # organizados por mes-año
 def videos(solicitud):
-    return render_to_response('website/videos.html', {
+    return render_to_response('videos.html', {
         'meses': [{
             'fecha': fecha,
             'videos': Video.objects.filter(fecha__year=fecha.year,
@@ -78,7 +78,7 @@ def videos(solicitud):
 
 
 def conferencias(solicitud):
-    return render_to_response('website/conferencias.html', {
+    return render_to_response('conferencias.html', {
         'meses': [{
             'fecha': fecha,
             'confes': Conferencia.objects.filter(fecha__year=fecha.year, fecha__month=fecha.month, activado=True).order_by('-fecha')
@@ -125,7 +125,7 @@ def video(solicitud, video_slug):
 
     comentarios = VideoComentario.objects.filter(video_id=video.id, activado=True).\
                                             order_by('-fecha', '-id')
-    return render_to_response('website/video.html', {
+    return render_to_response('video.html', {
         'video': video,  # datos del video particular
         'form': form,  # formulario de comentarios
         'comentarios': comentarios  # comentarios al video
@@ -134,7 +134,7 @@ def video(solicitud, video_slug):
 
 # plantilla de transmision en vivo
 def live(solicitud):
-    return render_to_response('website/live.html')
+    return render_to_response('live.html')
 
 
 # volver a generar las imagenes de video
@@ -185,7 +185,7 @@ def hola(solicitud):
 
         return HttpResponse(r.text)
 
-    return render_to_response('website/hola.html', {})
+    return render_to_response('hola.html', {})
 
 
 def conferencia(solicitud, template):
@@ -204,11 +204,11 @@ def conferencia(solicitud, template):
 def track(solicitud, registro_id):
     registro = get_object_or_404(RegistroCurso, id=registro_id)
 
-    return render_to_response('website/track.html', {'registro': registro})
+    return render_to_response('track.html', {'registro': registro})
 
 
 def podcast(solicitud):
-    return render_to_response('website/podcast.html', {
+    return render_to_response('podcast.html', {
         'podcast_list': Video.objects.filter(podcast=True, activado=True).order_by('-fecha')
      })
 
